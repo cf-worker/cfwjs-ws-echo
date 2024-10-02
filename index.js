@@ -7,6 +7,11 @@ export default {
    */
   async fetch(request) {
     startedAt ||= Date.now()
+    const uptime = () => Math.round((Date.now() - startedAt) / 1000)
+
+    if (request.url === "/") {
+      return Response.json({ startedAt, counter, uptime: uptime() })
+    }
 
     const upgradeHeader = request.headers.get("Upgrade")
     if (upgradeHeader !== "websocket") {
@@ -32,7 +37,7 @@ export default {
         case "count": return server.send(++counter)
         case "now": return server.send(new Date().toISOString())
         case "boot": return server.send(new Date(startedAt).toISOString())
-        case "uptime": return server.send(Math.round((Date.now() - startedAt) / 1000))
+        case "uptime": return server.send(uptime)
         case "help": return server.send(
           "ping, info, count, now, boot, uptime, /ping, /pong <data> /close 1000 [reason]"
         )
