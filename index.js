@@ -9,14 +9,14 @@ export default {
     startedAt ||= Date.now()
     const uptime = () => Math.round((Date.now() - startedAt) / 1000)
 
-    const path = new URL(request.url).pathname
-    if (path === "/") {
-      return Response.json({ startedAt, counter, uptime: uptime() })
-    }
-
     const upgradeHeader = request.headers.get("Upgrade")
     if (upgradeHeader !== "websocket") {
-      return new Response('Expected Upgrade: websocket', { status: 426 })
+      return Response.json({
+        startedAt: new Date(startedAt).toISOString(),
+        counter,
+        uptime: uptime()
+      })
+      // return new Response('Expected Upgrade: websocket', { status: 426 })
     }
 
     const { 0: client, 1: server } = new WebSocketPair()
