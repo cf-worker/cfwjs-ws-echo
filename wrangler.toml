@@ -1,0 +1,4 @@
+name = "ws-echo"
+main = "index.js"
+compatibility_date = "2024-10-02"
+observability.enabled = true
