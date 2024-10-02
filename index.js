@@ -9,7 +9,8 @@ export default {
     startedAt ||= Date.now()
     const uptime = () => Math.round((Date.now() - startedAt) / 1000)
 
-    if (request.url === "/") {
+    const path = new URL(request.url).pathname
+    if (path === "/") {
       return Response.json({ startedAt, counter, uptime: uptime() })
     }
 
